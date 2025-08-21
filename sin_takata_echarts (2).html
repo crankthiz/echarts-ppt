@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Sin Takata Chart</title>
+<!-- Import ECharts library -->
+<script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  #main {
+    width: 1000px;
+    height: 600px;
+  }
+</style>
+</head>
+<body>
+<h3>Sin Takata: Vuelo, Hotel, Total Real vs OBP</h3>
+<div id="main"></div>
+<script>
+// Dataset
+var categories = ['Enero','Febrero','Marzo','Abril','Mayo','Junio'];
+var vuelo = [12641052, 4432274, 11068663, 15033568, 28109219, 19829394];
+var hotel = [1588768, 726566, 4473879, 2452580, 1423000, 3549403];
+var totalReal = [14229820, 5158840, 15542542, 17486148, 29532219, 23378797];
+var obp = [13044000, 18609000, 31635000, 17067000, 25428000, 37550000];
+
+var chartDom = document.getElementById('main');
+var myChart = echarts.init(chartDom);
+var option;
+
+option = {
+    title: {
+        text: 'Sin Takata: Vuelo, Hotel, Total Real vs OBP',
+        left: 'center'
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: { type: 'cross' }
+    },
+    legend: {
+        data: ['Vuelo', 'Hotel', 'Total Real', 'OBP'],
+        top: '10%'
+    },
+    toolbox: {
+        show: true,
+        feature: {
+            saveAsImage: { show: true },
+            dataView: { readOnly: true }
+        }
+    },
+    xAxis: {
+        type: 'category',
+        data: categories,
+        axisLabel: {
+            rotate: 45
+        }
+    },
+    yAxis: [
+        {
+            type: 'value',
+            name: 'Montos (CLP)',
+            position: 'left',
+            axisLine: { show: true },
+            axisLabel: {
+                formatter: function (value) {
+                    // Format numbers as millions for readability
+                    return '$' + (value / 1000000).toFixed(1) + 'M';
+                }
+            }
+        },
+        {
+            type: 'value',
+            name: 'OBP',
+            position: 'right',
+            axisLine: { show: true },
+            axisLabel: {
+                formatter: function (value) {
+                    return '$' + (value / 1000000).toFixed(1) + 'M';
+                }
+            }
+        }
+    ],
+    series: [
+        {
+            name: 'Vuelo',
+            type: 'bar',
+            data: vuelo,
+            tooltip: { valueFormatter: function (value) { return '$' + value.toLocaleString(); } }
+        },
+        {
+            name: 'Hotel',
+            type: 'bar',
+            data: hotel,
+            tooltip: { valueFormatter: function (value) { return '$' + value.toLocaleString(); } }
+        },
+        {
+            name: 'Total Real',
+            type: 'bar',
+            data: totalReal,
+            tooltip: { valueFormatter: function (value) { return '$' + value.toLocaleString(); } }
+        },
+        {
+            name: 'OBP',
+            type: 'line',
+            yAxisIndex: 1,
+            data: obp,
+            smooth: true,
+            itemStyle: { color: '#FFD700' },
+            lineStyle: { color: '#FFD700' },
+            tooltip: { valueFormatter: function (value) { return '$' + value.toLocaleString(); } }
+        }
+    ]
+};
+
+myChart.setOption(option);
+</script>
+</body>
+</html>
